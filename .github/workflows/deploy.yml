@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: uses/checkout@v3
 
       - name: Deploy to EC2
         uses: appleboy/ssh-action@master
@@ -20,11 +20,14 @@ jobs:
           key: ${{ secrets.EC2_KEY }}
           script: |
             cd ~
-            rm -rf OSS_Assignment3_EC2
-            git clone https://github.com/${{ github.repository }}.git
-            cd OSS_Assignment3_EC2
-            sudo apt-get update
-            sudo apt-get install -y python3-pip
+            if [ -d "OSS_Assignment3_EC2" ]; then
+              cd OSS_Assignment3_EC2 && git pull
+            else
+              git clone https://github.com/${{ github.repository }}.git
+              cd OSS_Assignment3_EC2
+            fi
+            
             pip3 install --break-system-packages -r requirements.txt
+            
             sudo pkill -f streamlit || true
-            nohup streamlit run app.py --server.port 8501 --server.address 0.0.0.0 > streamlit.log 2>&1 &
+            nohup python3 -m streamlit run app.py --server.port 8501 --server.address 0.0.0.0 > streamlit.log 2>&1 &
