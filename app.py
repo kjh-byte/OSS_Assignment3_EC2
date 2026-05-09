@@ -75,11 +75,14 @@ def main():
         input_pw = st.text_input("비밀번호 (영문 성함)", type="password", help="영문으로 'kimjaehee'를 입력하세요.").strip()
 
         if st.button("로그인"):
+            print("[LOG] 로그인 시도 - 아이디:", input_id)
             if input_id == "2025404006" and input_pw.lower() == "kimjaehee":
                 st.session_state.login_active = True
+                print("[LOG] 로그인 성공!")
                 st.success("인증 성공! 김재희 님 환영합니다.")
                 st.rerun()
             else:
+                print("[LOG] 로그인 실패 - 잘못된 아이디/비밀번호")
                 st.error("학번 또는 비밀번호가 틀렸습니다.")
     
     else:
@@ -115,6 +118,7 @@ def main():
             submitted = st.form_submit_button("종합 분석 결과 확인")
             
             if submitted:
+                print("[LOG] 퀴즈 제출됨 - 총점:", total_score)
                 st.balloons() 
                 st.divider()
                 
@@ -123,10 +127,12 @@ def main():
                 elif total_score <= 170: result = "역사탐방형 (이집트 피라미드 추천)"
                 else: result = "도심야경형 (홍콩 빅토리아 피크 추천)"
                 
+                print("[LOG] 분석 결과:", result)
                 st.header(f"🌟 분석 결과: {result}")
                 st.info(f"당신의 총점은 {total_score}점입니다. 취향 저격 여행지로 떠나보세요!")
 
         if st.sidebar.button("로그아웃"):
+            print("[LOG] 로그아웃")
             st.session_state.login_active = False
             st.rerun()
 
