@@ -16,12 +16,15 @@ jobs:
           username: ubuntu
           key: ${{ secrets.EC2_KEY }}
           port: 22
+          request_pty: true
           script: |
             cd ~/OSS_Assignment3_EC2
             git pull origin main
             pkill -f "streamlit" || true
             sleep 1
-            setsid streamlit run app.py \
+            nohup streamlit run app.py \
               --server.port 8501 \
               --server.address 0.0.0.0 \
               > ~/OSS_Assignment3_EC2/streamlit.log 2>&1 &
+            disown
+            sleep 3
