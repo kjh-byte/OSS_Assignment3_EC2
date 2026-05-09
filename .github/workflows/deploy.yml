@@ -25,4 +25,5 @@ jobs:
               --server.port 8501 \
               --server.address 0.0.0.0 \
               > ~/OSS_Assignment3_EC2/streamlit.log 2>&1 &
-              
+            disown
+            sleep 2
